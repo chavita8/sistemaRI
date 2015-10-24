@@ -1,7 +1,6 @@
 from django.db import models
 
 class Documento(models.Model):
-    titulo = models.CharField(max_length=255)
     direccion_url = models.CharField(max_length=255)
 
 class Termino(models.Model):
