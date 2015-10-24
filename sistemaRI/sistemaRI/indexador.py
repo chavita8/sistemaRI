@@ -34,13 +34,7 @@ class Indexador:
                 count +=1
         print "Se insertaron %s stopwords en base de datos" %str(count)
 
-    def indexar(self,inf,nombre_doc,doc_url):
-        name_stop = unidecode(nombre_doc)
-        name_stop = name_stop.lower()
-        name_stop = name_stop.strip()
-        name_stop = self.eliminarBasura(name_stop)
-        stop_name = Stopword(stopword=name_stop)
-        stop_name.save()
+    def indexar(self,inf,doc_url):
         stopwords = Stopword.objects.all()
         stop_set = set(s.stopword for s in stopwords)
         terminos = []
@@ -55,7 +49,7 @@ class Indexador:
                 if t not in stop_set:
                     terminos.append(t)
         print terminos
-        doc = Documento(titulo=nombre_doc,direccion_url=doc_url)
+        doc = Documento(direccion_url=doc_url)
         doc.save()
         for termino in terminos:
             if termino != '':
@@ -64,7 +58,7 @@ class Indexador:
                 posteos = Posteo.objects.all()
                 posteo_repetido = []
                 for posteo in posteos:
-                    if posteo.documento.titulo == doc.titulo and posteo.termino.termino == term.termino:
+                    if posteo.documento.direccion_url == doc.direccion_url and posteo.termino.termino == term.termino:
                         print 'repetido'
                         print posteo
                         posteo_repetido.append(posteo)
@@ -79,19 +73,6 @@ class Indexador:
                     new_posteo = Posteo(documento=doc,termino=term,frequencia=1)
                     new_posteo.save()
 
-                
-
-
-                """
-                if posteo:
-                    freq = posteo.frequencia
-                    new_freq = freq + 1
-                    posteo.frequencia = new_freq
-                else:
-                    new_posteo = Posteo(documento=doc,termino=term,frequencia=1)
-                    new_posteo.save()
-                """
-
     def eliminarBasura(self,term):
         clean_word = []
         for c in term:
@@ -103,9 +84,7 @@ class Indexador:
 
 
 
-
-"""
 indexador = Indexador()
-indexador.importar_stopwords('/home/archy/Downloads/diccionario_negativo.txt')
-"""
+indexador.importar_stopwords('diccionario_negativo.txt')
+
 
