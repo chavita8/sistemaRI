@@ -17,17 +17,15 @@ class Crawler:
     def recuperarInf(self,url,prof):
         html = self.obtenerHtml(url)
         soup = BeautifulSoup(html,'html.parser')
-        nombre_doc = soup.title.string
-        print nombre_doc
 
         if prof == 0:
             data = soup.get_text()
-            self.indexador.indexar(data,nombre_doc,url)
+            self.indexador.indexar(data,url)
             self.count += 1
 
         if prof > 0:
             data = soup.get_text() 
-            self.indexador.indexar(data,nombre_doc,url)
+            self.indexador.indexar(data,url)
             self.count += 1
             paginas = self.obtenerPag(soup)
             for pagina in paginas:
